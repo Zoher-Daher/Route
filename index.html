@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Direction service</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+   
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <button onclick="calcRoute();">Calculate Route</button>
+    
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=USE_YOUR_KEY"
+    ></script>
+
+    <script>
+        //Set map options
+        var mapOptions = {
+          center: {lat:51.5,lng:-0.1},
+          zoom:7,
+          mapTypeId:google.maps.MapTypeId.ROADMAP
+        }
+      
+        //creating map object
+        const map = new google.maps.Map(document.getElementById("map"),mapOptions);
+
+        //creating DirectionsService object
+        const directionsService = new google.maps.DirectionsService();
+        //creating DirectionsRendered object
+        const directionDisplay = new google.maps.DirectionsRenderer();
+        directionDisplay.setMap(map);
+
+        //define calcRoute
+        function calcRoute(){
+            var request = {
+              origin:"New York",
+              destination:"Toronto",
+              travelMode: google.maps.TravelMode.DRIVING,
+              unitSystem: google.maps.UnitSystem.METRIC
+            };
+            directionsService.route(request,function(result, status){
+              if(status == google.maps.DirectionsStatus.OK){             
+                window.alert("The travelling distance is " + result.routes[0].legs[0].distance.text +
+                 "The travelling time is " +result.routes[0].legs[0].duration.text);
+
+                directionDisplay.setDirections(result);
+              }
+            });
+
+        }//defite calcRoute 
+
+    </script>
+  </body>
+</html>
